@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <title>The Magical Cat Button</title>
+</head>
+
+<body>
+    <button id="catButton">magical cat button</button>
+    <div id="images">
+    </div>
+    <script src='http://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <script type="text/javascript">
+    
+    // When you click the magical cat button, perform this function
+    $('#catButton').on('click', function() {
+       
+        // set the url to get a random cat image equal to queryURL variable
+        var queryURL = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cats";
+
+        $(document).on('click', '.someClass', function(clickEvent) {
+                  console.log( $(this).attr('data-frames') );
+                });
+
+        // use jQuery to send an ajax get request using the random cat image url
+        $.ajax({url: queryURL, method: 'GET'})
+
+            // when the response comes back and the request is DONE, do this function
+            .done(function(response) {
+
+                // store the json object's image url (original size) in a variable
+                var imageUrl = response.data.image_original_url;
+                // other examples:
+                var imageFrames = response.data.image_frames;
+                var imageID = response.data.id;
+
+                // create a new image using jquery and store it as variable catImage
+                var catImage = $("<img>");
+                
+                // change the catImage 'src' attribute to the image URL
+                catImage.addClass('someClass');
+                catImage.attr('src', imageUrl);
+                catImage.attr('alt', 'cat image');
+                catImage.attr('data-id', imageID);
+                catImage.attr('data-frames', imageFrames);
+                // *** you need to APPEND (or prepend) the image
+                $('#images').prepend(catImage);
+            });
+    });
+    </script>
+</body>
+
+</html>
